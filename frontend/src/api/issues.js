@@ -20,6 +20,15 @@ export const issuesApi = {
 
   update: (projectId, number, data) =>
     client.patch(`/projects/${projectId}/issues/${number}`, data),
+
+  getComments: (projectId, number) =>
+    client.get(`/projects/${projectId}/issues/${number}/comments`),
+
+  addComment: (projectId, number, body) =>
+    client.post(`/projects/${projectId}/issues/${number}/comments`, { body }),
+
+  getHistory: (projectId, number) =>
+    client.get(`/projects/${projectId}/issues/${number}/history`),
 };
 
 export default issuesApi;
