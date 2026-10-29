@@ -6,6 +6,7 @@ from sqlalchemy.pool import StaticPool
 
 from app.db import Base, get_db
 from app.main import app
+import app.models as _models
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
@@ -53,3 +54,4 @@ def client(db_session):
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
+
