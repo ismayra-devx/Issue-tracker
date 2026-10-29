@@ -68,15 +68,24 @@ def get_current_user(
 
 
 def get_project_member(
-    project_id: int,
+    project_id: Optional[int] = None,
+    id: Optional[int] = None,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> ProjectMember:
+    # Accept either {id} or {project_id} from path parameters
+    target_id = project_id if project_id is not None else id
+    if target_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing project ID parameter",
+        )
+
     # Query membership directly. If project does not exist OR the caller is not a member,
     # member is None -> return 404 in both cases (to prevent project enumeration).
     member = db.scalar(
         select(ProjectMember).where(
-            ProjectMember.project_id == project_id,
+            ProjectMember.project_id == target_id,
             ProjectMember.user_id == current_user.id,
         )
     )
