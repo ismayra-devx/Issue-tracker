@@ -4,9 +4,13 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from app.config import settings
 from app.db import Base, get_db
 from app.main import app
 import app.models as _models
+
+# Fast hashing for tests only
+settings.BCRYPT_ROUNDS = 4
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
@@ -54,4 +58,3 @@ def client(db_session):
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
-

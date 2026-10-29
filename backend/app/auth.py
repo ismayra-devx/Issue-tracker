@@ -16,7 +16,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 def hash_password(password: str) -> str:
-    salt = bcrypt.gensalt()
+    salt = bcrypt.gensalt(rounds=settings.BCRYPT_ROUNDS)
     pwd_bytes = password.encode("utf-8")
     return bcrypt.hashpw(pwd_bytes, salt).decode("utf-8")
 

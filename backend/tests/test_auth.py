@@ -214,3 +214,20 @@ def test_project_member_and_owner_dependencies(client, db_session):
     )
     assert owner_res.status_code == 200
     assert owner_res.json() == {"project_id": project.id, "role": "owner"}
+
+
+def test_bcrypt_rounds_configuration_and_verification():
+    # Prove that the default setting definition on Settings model is 12
+    from app.config import Settings
+    assert Settings.model_fields["BCRYPT_ROUNDS"].default == 12
+
+    # Prove that test environment configured low cost (4)
+    from app.config import settings
+    assert settings.BCRYPT_ROUNDS == 4
+
+    # Prove hash_password still verifies correctly with low cost
+    from app.auth import hash_password, verify_password
+    raw_password = "SecurePassword123!"
+    hashed = hash_password(raw_password)
+    assert verify_password(raw_password, hashed) is True
+    assert verify_password("WrongPassword123!", hashed) is False

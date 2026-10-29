@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./issue_tracker.db"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     CORS_ORIGINS: List[str] = ["http://localhost:5173"]
+    BCRYPT_ROUNDS: int = 12
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
