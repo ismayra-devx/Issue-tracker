@@ -31,3 +31,4 @@ export function formatFullTimestamp(dateString) {
   if (isNaN(date.getTime())) return '';
   return date.toLocaleString();
 }
+

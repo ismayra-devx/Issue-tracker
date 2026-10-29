@@ -97,10 +97,10 @@ export default function NewIssueModal({
         onClick={onClose}
       />
 
-      <div className="min-h-full flex items-center justify-center p-4">
-        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden relative z-10 my-8">
+      <div className="min-h-full flex items-center justify-center p-3 sm:p-4">
+        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden relative z-10 my-6 sm:my-8">
           {/* Header */}
-          <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+          <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
             <h2 className="text-lg font-bold text-slate-900">Create New Issue</h2>
             <button
               type="button"
@@ -114,7 +114,7 @@ export default function NewIssueModal({
 
           {formError && (
             <div
-              className="m-6 mb-0 p-3.5 rounded-lg bg-red-50 border border-red-200 text-sm text-red-800 flex items-start gap-2.5"
+              className="m-5 mb-0 p-3.5 rounded-lg bg-red-50 border border-red-200 text-sm text-red-800 flex items-start gap-2.5"
               role="alert"
             >
               <span className="w-2 h-2 rounded-full bg-red-500 mt-1.5 shrink-0" />
@@ -122,7 +122,7 @@ export default function NewIssueModal({
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
             {/* Title */}
             <div>
               <label htmlFor="issueTitle" className="block text-sm font-semibold text-slate-700 mb-1">
@@ -209,7 +209,7 @@ export default function NewIssueModal({
                   <button
                     type="button"
                     onClick={() => setShowNewLabel(!showNewLabel)}
-                    className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 cursor-pointer"
+                    className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 min-h-[44px] px-2 inline-flex items-center cursor-pointer"
                   >
                     {showNewLabel ? 'Cancel new label' : '+ New label'}
                   </button>
@@ -218,33 +218,33 @@ export default function NewIssueModal({
 
               {/* Quick Label Creator */}
               {showNewLabel && isOwner && (
-                <div className="mb-3 p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center gap-2">
+                <div className="mb-3 p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center gap-2 flex-wrap">
                   <input
                     type="text"
                     maxLength={30}
                     placeholder="New label..."
                     value={newLabelName}
                     onChange={(e) => setNewLabelName(e.target.value)}
-                    className="flex-1 min-h-[38px] px-2.5 py-1 text-xs border border-slate-300 rounded bg-white"
+                    className="flex-1 min-w-[120px] min-h-[44px] px-3 py-1.5 text-xs border border-slate-300 rounded bg-white"
                   />
                   <input
                     type="color"
                     value={newLabelColor}
                     onChange={(e) => setNewLabelColor(e.target.value)}
-                    className="w-9 h-[38px] p-0.5 rounded border border-slate-300 bg-white cursor-pointer"
+                    className="w-11 h-[44px] p-0.5 rounded border border-slate-300 bg-white cursor-pointer"
                   />
                   <button
                     type="button"
                     onClick={handleCreateLabel}
                     disabled={creatingLabel}
-                    className="min-h-[38px] px-3 bg-indigo-600 text-white rounded text-xs font-semibold hover:bg-indigo-500 cursor-pointer"
+                    className="min-h-[44px] px-4 bg-indigo-600 text-white rounded text-xs font-semibold hover:bg-indigo-500 cursor-pointer disabled:opacity-50"
                   >
                     {creatingLabel ? '...' : 'Add'}
                   </button>
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2 min-h-[36px] p-2 rounded-lg border border-slate-200 bg-slate-50/50">
+              <div className="flex flex-wrap gap-2 min-h-[44px] p-2 rounded-lg border border-slate-200 bg-slate-50/50 items-center">
                 {labels.length === 0 ? (
                   <span className="text-xs text-slate-400 italic">No labels available.</span>
                 ) : (
@@ -255,7 +255,7 @@ export default function NewIssueModal({
                         type="button"
                         key={l.id}
                         onClick={() => toggleLabel(l.id)}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium cursor-pointer transition-all border ${
+                        className={`inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-md text-xs font-medium cursor-pointer transition-all border ${
                           isSelected
                             ? 'ring-2 ring-indigo-500 ring-offset-1 font-semibold'
                             : 'opacity-75 hover:opacity-100'

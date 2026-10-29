@@ -129,7 +129,7 @@ export default function IssueSidebar({
           <button
             type="button"
             onClick={() => setShowLabelPicker(!showLabelPicker)}
-            className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 min-h-[36px] px-1 cursor-pointer"
+            className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 min-h-[44px] px-2 inline-flex items-center cursor-pointer"
           >
             {showLabelPicker ? 'Done' : 'Edit Labels'}
           </button>
@@ -174,7 +174,7 @@ export default function IssueSidebar({
                     type="button"
                     onClick={() => handleToggleLabel(l.id)}
                     disabled={isPatching}
-                    className={`w-full min-h-[38px] px-2.5 py-1.5 rounded text-xs flex items-center justify-between transition-colors border cursor-pointer ${
+                    className={`w-full min-h-[44px] px-3 py-2 rounded text-xs flex items-center justify-between transition-colors border cursor-pointer ${
                       isSelected
                         ? 'bg-white font-semibold shadow-xs'
                         : 'bg-transparent hover:bg-white text-slate-600 border-transparent'

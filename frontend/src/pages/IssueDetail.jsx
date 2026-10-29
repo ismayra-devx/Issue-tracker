@@ -224,7 +224,7 @@ export default function IssueDetail() {
       <div>
         <Link
           to={`/projects/${projectId}`}
-          className="text-xs font-semibold text-slate-500 hover:text-indigo-600 flex items-center gap-1 min-h-[36px] w-fit"
+          className="text-xs font-semibold text-slate-500 hover:text-indigo-600 flex items-center gap-1 min-h-[44px] w-fit"
         >
           &larr; Back to Issues
         </Link>
@@ -266,14 +266,14 @@ export default function IssueDetail() {
                       setEditTitle(issue.title);
                     }}
                     disabled={isPatching}
-                    className="min-h-[38px] px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
+                    className="min-h-[44px] px-4 py-2 rounded-lg border border-slate-300 text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isPatching}
-                    className="min-h-[38px] inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-500 cursor-pointer shadow-xs disabled:opacity-50"
+                    className="min-h-[44px] inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-500 cursor-pointer shadow-xs disabled:opacity-50"
                   >
                     {isPatching ? <Spinner size="sm" className="text-white" /> : 'Save'}
                   </button>
@@ -283,7 +283,7 @@ export default function IssueDetail() {
               <div className="group flex items-start justify-between gap-3">
                 <h1
                   onClick={() => setIsEditingTitle(true)}
-                  className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug cursor-pointer hover:text-indigo-600 transition-colors"
+                  className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug cursor-pointer hover:text-indigo-600 transition-colors flex-1"
                   title="Click to edit title"
                 >
                   {issue.title}
@@ -291,7 +291,7 @@ export default function IssueDetail() {
                 <button
                   type="button"
                   onClick={() => setIsEditingTitle(true)}
-                  className="text-xs text-slate-400 group-hover:text-indigo-600 min-h-[36px] px-2 inline-flex items-center cursor-pointer font-medium"
+                  className="text-xs text-slate-400 group-hover:text-indigo-600 min-h-[44px] min-w-[44px] inline-flex items-center justify-center cursor-pointer font-medium"
                 >
                   Edit
                 </button>
@@ -311,7 +311,7 @@ export default function IssueDetail() {
                   <button
                     type="button"
                     onClick={() => setDescTab('write')}
-                    className={`px-3 py-1 rounded text-xs font-semibold transition-colors cursor-pointer ${
+                    className={`min-h-[38px] px-3 py-1.5 rounded text-xs font-semibold transition-colors cursor-pointer ${
                       descTab === 'write' ? 'bg-white text-indigo-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
@@ -320,7 +320,7 @@ export default function IssueDetail() {
                   <button
                     type="button"
                     onClick={() => setDescTab('preview')}
-                    className={`px-3 py-1 rounded text-xs font-semibold transition-colors cursor-pointer ${
+                    className={`min-h-[38px] px-3 py-1.5 rounded text-xs font-semibold transition-colors cursor-pointer ${
                       descTab === 'preview' ? 'bg-white text-indigo-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
@@ -334,7 +334,7 @@ export default function IssueDetail() {
                     setIsEditingDesc(true);
                     setDescTab('write');
                   }}
-                  className="text-xs font-semibold text-slate-500 hover:text-indigo-600 min-h-[36px] px-2 flex items-center cursor-pointer"
+                  className="text-xs font-semibold text-slate-500 hover:text-indigo-600 min-h-[44px] px-3 inline-flex items-center cursor-pointer"
                 >
                   Edit description
                 </button>
@@ -371,14 +371,14 @@ export default function IssueDetail() {
                       setEditDesc(issue.description || '');
                     }}
                     disabled={isPatching}
-                    className="min-h-[38px] px-3.5 py-1.5 rounded-lg border border-slate-300 text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
+                    className="min-h-[44px] px-4 py-2 rounded-lg border border-slate-300 text-xs font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isPatching}
-                    className="min-h-[38px] inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-500 cursor-pointer shadow-xs disabled:opacity-50"
+                    className="min-h-[44px] inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-500 cursor-pointer shadow-xs disabled:opacity-50"
                   >
                     {isPatching ? <Spinner size="sm" className="text-white" /> : 'Save'}
                   </button>

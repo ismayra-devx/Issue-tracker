@@ -41,3 +41,4 @@ export default function CommentList({ comments, newCommentRef }) {
     </div>
   );
 }
+
