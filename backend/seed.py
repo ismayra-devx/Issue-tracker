@@ -7,6 +7,10 @@ backend_dir = Path(__file__).resolve().parent
 if str(backend_dir) not in sys.path:
     sys.path.insert(0, str(backend_dir))
 
+# Provide a seed fallback key if .env has not yet been copied
+if "SECRET_KEY" not in os.environ and not (backend_dir / ".env").exists():
+    os.environ["SECRET_KEY"] = "seed-script-temporary-key-min-32-chars-long"
+
 from app.auth import hash_password
 from app.db import Base, SessionLocal, engine
 from app.models import (

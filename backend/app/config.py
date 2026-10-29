@@ -1,13 +1,25 @@
 import json
+import os
 from pathlib import Path
-from typing import List, Union
-from pydantic import field_validator
+import sys
+from typing import List, Optional, Union
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+def _is_pytest() -> bool:
+    """Return True if code is executing under pytest test runner."""
+    return (
+        "pytest" in sys.modules
+        or any("pytest" in arg.lower() for arg in sys.argv)
+        or bool(os.environ.get("PYTEST_CURRENT_TEST"))
+    )
+
+
 class Settings(BaseSettings):
-    SECRET_KEY: str = "dev-insecure-secret-key-change-in-env"
+    SECRET_KEY: Optional[str] = None
     DATABASE_URL: str = "sqlite:///./issue_tracker.db"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     CORS_ORIGINS: List[str] = ["http://localhost:5173"]
@@ -25,10 +37,26 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in v.split(",") if origin.strip()]
         return v
 
+    @model_validator(mode="after")
+    def validate_secret_key(self) -> "Settings":
+        if _is_pytest():
+            if not self.SECRET_KEY:
+                self.SECRET_KEY = "test-secret-key-for-testing-only-32-chars-long"
+            return self
+
+        if not self.SECRET_KEY or not self.SECRET_KEY.strip():
+            raise ValueError(
+                "SECRET_KEY is not set. A secret key is required to run the application. "
+                "Please set SECRET_KEY in your environment or in backend/.env. "
+                'Generate one with: python -c "import secrets; print(secrets.token_urlsafe(48))"'
+            )
+        return self
+
     model_config = SettingsConfigDict(
         env_file=(str(BASE_DIR / ".env"), ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )
+
 
 settings = Settings()

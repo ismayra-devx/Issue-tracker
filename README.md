@@ -91,7 +91,7 @@ pytest -v
 pytest -W default
 ```
 
-* **Test Suite Metrics**: **52 tests passed**, 1 harmless third-party deprecation warning, completed in **~2.7 seconds**.
+* **Test Suite Metrics**: **53 tests passed**, 1 harmless third-party deprecation warning, completed in **~2.7 seconds**.
 
 ---
 
@@ -198,7 +198,7 @@ The database uses SQLAlchemy 2.0 with referential integrity (`PRAGMA foreign_key
 * **Claude (Anthropic)**: Planned the build, wrote the step-by-step prompts given to the coding agent, and reviewed the output against the assignment requirements. I reviewed each change and can explain every part of the codebase.
 * **Google DeepMind Antigravity Coding Agent**:
   * **Code Scaffolding**: Generated initial boilerplate for SQLAlchemy models, Pydantic schemas, and Vite React components based on architectural requirements.
-  * **Test Engineering**: Decomposed monolithic test cases into 52 isolated, deterministic pytest functions and configured test-only bcrypt round reduction.
+  * **Test Engineering**: Decomposed monolithic test cases into 53 isolated, deterministic pytest functions and configured test-only bcrypt round reduction.
   * **Responsive UI Auditing**: Scanned CSS layouts across 360px mobile viewports, identifying tap target constraints (<44px) and full-screen drawer sizing adjustments.
   * **Security & Constraint Verification**: Validated input sanitization, Pydantic extra-field forbidding, and authorization dependencies (`get_project_member` returning 404).
 

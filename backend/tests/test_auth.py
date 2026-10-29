@@ -231,3 +231,14 @@ def test_bcrypt_rounds_configuration_and_verification():
     hashed = hash_password(raw_password)
     assert verify_password(raw_password, hashed) is True
     assert verify_password("WrongPassword123!", hashed) is False
+
+
+def test_secret_key_required_outside_pytest(monkeypatch):
+    import pytest
+    from app.config import Settings
+
+    # Simulate non-pytest execution environment without SECRET_KEY
+    monkeypatch.setattr("app.config._is_pytest", lambda: False)
+    with pytest.raises(ValueError, match="SECRET_KEY is not set"):
+        Settings(_env_file=None, SECRET_KEY=None)
+
