@@ -1,3 +1,20 @@
+from fastapi import Depends
+
+from app.auth import create_access_token, get_project_member, require_project_owner
+from app.main import app
+from app.models import Project, ProjectMember, ProjectRole, User
+
+# Tiny test-only routes to verify authorization dependencies
+@app.get("/test/projects/{project_id}/member-only")
+def member_only_endpoint(member: ProjectMember = Depends(get_project_member)):
+    return {"project_id": member.project_id, "role": member.role.value}
+
+
+@app.get("/test/projects/{project_id}/owner-only")
+def owner_only_endpoint(member: ProjectMember = Depends(require_project_owner)):
+    return {"project_id": member.project_id, "role": member.role.value}
+
+
 def test_register_then_login_returns_token(client):
     # 1. Register then login returns a token
     reg_res = client.post(
@@ -118,3 +135,82 @@ def test_auth_me_requires_token(client):
     assert me_data["email"] == "charlie@example.com"
     assert me_data["name"] == "Charlie"
     assert "password_hash" not in me_data
+
+
+def test_project_member_and_owner_dependencies(client, db_session):
+    # 5. A non-member calling a route protected by get_project_member gets 404
+    owner = User(
+        name="Owner User",
+        email="owner@example.com",
+        password_hash="dummy_hash",
+    )
+    non_member = User(
+        name="Non Member",
+        email="nonmember@example.com",
+        password_hash="dummy_hash",
+    )
+    regular_member = User(
+        name="Regular Member",
+        email="regular@example.com",
+        password_hash="dummy_hash",
+    )
+    project = Project(name="Private Project", owner=owner)
+    db_session.add_all([owner, non_member, regular_member, project])
+    db_session.commit()
+
+    owner_membership = ProjectMember(
+        project_id=project.id,
+        user_id=owner.id,
+        role=ProjectRole.owner,
+    )
+    regular_membership = ProjectMember(
+        project_id=project.id,
+        user_id=regular_member.id,
+        role=ProjectRole.member,
+    )
+    db_session.add_all([owner_membership, regular_membership])
+    db_session.commit()
+
+    owner_token = create_access_token(owner.id)
+    non_member_token = create_access_token(non_member.id)
+    regular_token = create_access_token(regular_member.id)
+
+    # Calling with non_member token returns 404
+    non_member_res = client.get(
+        f"/test/projects/{project.id}/member-only",
+        headers={"Authorization": f"Bearer {non_member_token}"},
+    )
+    assert non_member_res.status_code == 404
+    assert non_member_res.json() == {"detail": "Project not found"}
+
+    # Calling with non-existent project_id also returns 404 (does not reveal project existence)
+    non_existent_res = client.get(
+        "/test/projects/999999/member-only",
+        headers={"Authorization": f"Bearer {owner_token}"},
+    )
+    assert non_existent_res.status_code == 404
+    assert non_existent_res.json() == {"detail": "Project not found"}
+
+    # Calling with member token returns 200
+    member_res = client.get(
+        f"/test/projects/{project.id}/member-only",
+        headers={"Authorization": f"Bearer {regular_token}"},
+    )
+    assert member_res.status_code == 200
+    assert member_res.json() == {"project_id": project.id, "role": "member"}
+
+    # Regular member calling require_project_owner gets 403
+    forbidden_res = client.get(
+        f"/test/projects/{project.id}/owner-only",
+        headers={"Authorization": f"Bearer {regular_token}"},
+    )
+    assert forbidden_res.status_code == 403
+    assert forbidden_res.json() == {"detail": "Project owner privileges required"}
+
+    # Project owner calling require_project_owner gets 200
+    owner_res = client.get(
+        f"/test/projects/{project.id}/owner-only",
+        headers={"Authorization": f"Bearer {owner_token}"},
+    )
+    assert owner_res.status_code == 200
+    assert owner_res.json() == {"project_id": project.id, "role": "owner"}

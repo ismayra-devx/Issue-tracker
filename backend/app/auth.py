@@ -5,11 +5,12 @@ import bcrypt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 import jwt
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.db import get_db
-from app.models import User
+from app.models import ProjectMember, ProjectRole, User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
@@ -64,3 +65,35 @@ def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+
+def get_project_member(
+    project_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> ProjectMember:
+    # Query membership directly. If project does not exist OR the caller is not a member,
+    # member is None -> return 404 in both cases (to prevent project enumeration).
+    member = db.scalar(
+        select(ProjectMember).where(
+            ProjectMember.project_id == project_id,
+            ProjectMember.user_id == current_user.id,
+        )
+    )
+    if member is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Project not found",
+        )
+    return member
+
+
+def require_project_owner(
+    member: ProjectMember = Depends(get_project_member),
+) -> ProjectMember:
+    if member.role != ProjectRole.owner:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Project owner privileges required",
+        )
+    return member
