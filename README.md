@@ -118,7 +118,7 @@ The database uses SQLAlchemy 2.0 with referential integrity (`PRAGMA foreign_key
 * **Issue**: Central workflow item with project-scoped sequential numbers (`number`, unique on `(project_id, number)`). Indexed on `(project_id, status)`, `(project_id, assignee_id)`, and `(project_id, priority)`.
 * **IssueLabel**: Composite primary key junction table `(issue_id, label_id)` with cascading deletions.
 * **Comment**: Chronological discussion thread per issue (`created_at` ascending).
-* **IssueHistory**: Immutable audit log of every attribute change (`created_at` descending), storing field name, old value, and new value.
+* **IssueHistory**: Append-only audit log: no API route can edit or delete history. Stored in reverse chronological order (`created_at` descending), recording field name, old value, new value, and acting user.
 
 ---
 
@@ -163,7 +163,7 @@ The database uses SQLAlchemy 2.0 with referential integrity (`PRAGMA foreign_key
   * Project-scoped sequential issue numbers (`#1`, `#2`, etc.).
   * Comprehensive filtering (status, priority, type, assignee, label).
   * Debounced search (`q`, 300ms delay).
-  * Multi-column sorting (`created_at`, `updated_at`, `priority`, etc.).
+  * Sort options: `created_at` (default, newest first) or `updated_at` (recently updated first), each with secondary sort by `id desc`.
   * Server-side pagination (20 items/page) with URL query parameter synchronization (`?status=open&page=2`).
   * Desktop tabular view and mobile-optimized stacked touch card view.
 * **Issue Detail & Workflow**:
@@ -173,7 +173,7 @@ The database uses SQLAlchemy 2.0 with referential integrity (`PRAGMA foreign_key
   * Chronological comment thread with plain-text formatting and relative timestamps.
   * Reverse-chronological audit history log detailing who changed what and when.
 * **Responsive & UI Quality**:
-  * Audited and tested across 360px, 768px, and 1280px viewports.
+  * Built mobile-first with Tailwind breakpoints; layouts reviewed at 360px, 768px and 1280px.
   * All interactive buttons, drawer elements, and modal controls meet minimum 44px tap target requirements.
   * Double-click submit prevention across all forms.
   * Error alerts, empty states, and loading skeletons on every list and modal.
