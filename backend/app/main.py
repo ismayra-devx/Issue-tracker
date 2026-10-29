@@ -8,6 +8,7 @@ import app.models  # noqa: F401 - register models on metadata
 from app.config import settings
 from app.db import Base, engine
 from app.routers.auth import router as auth_router
+from app.routers.comments import router as comments_router
 from app.routers.issues import router as issues_router
 from app.routers.projects import router as projects_router
 from app.services.exceptions import NotFoundError, ValidationError, WorkflowError
@@ -63,6 +64,7 @@ async def not_found_error_handler(request: Request, exc: NotFoundError):
 app.include_router(auth_router)
 app.include_router(projects_router)
 app.include_router(issues_router)
+app.include_router(comments_router)
 
 
 @app.get("/health")
