@@ -218,18 +218,17 @@ def update_issue(
             new_status = changes["status"]
             if isinstance(new_status, str):
                 new_status = IssueStatus(new_status)
-            if new_status != issue.status:
-                validate_transition(issue.status, new_status)
-                history_entries.append(
-                    IssueHistory(
-                        issue_id=issue.id,
-                        actor_id=actor.id,
-                        field="status",
-                        old_value=issue.status.value,
-                        new_value=new_status.value,
-                    )
+            validate_transition(issue.status, new_status)
+            history_entries.append(
+                IssueHistory(
+                    issue_id=issue.id,
+                    actor_id=actor.id,
+                    field="status",
+                    old_value=issue.status.value,
+                    new_value=new_status.value,
                 )
-                issue.status = new_status
+            )
+            issue.status = new_status
 
         # Assignee
         if "assignee_id" in changes:
