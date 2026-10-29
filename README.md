@@ -4,11 +4,16 @@ A modern, responsive issue tracking and project management system built with **F
 
 ---
 
+## Live Demo
+
+Not deployed. Run locally with the steps above.
+
+---
+
 ## Setup & Getting Started
 
 ### Prerequisites
-* **Python 3.10+** (tested on Python 3.12 & 3.14)
-* **Node.js 18+** & **npm**
+* Tested on Python 3.14 / Node 24.16
 
 ---
 
@@ -73,11 +78,17 @@ npm run build
 ```bash
 cd backend
 
+# Activate the virtual environment
+# Windows (PowerShell):
+.\venv\Scripts\Activate.ps1
+# macOS / Linux:
+source venv/bin/activate
+
 # Run pytest test suite
-.\venv\Scripts\pytest -v
+pytest -v
 
 # Run with warnings summary
-.\venv\Scripts\pytest -W default
+pytest -W default
 ```
 
 * **Test Suite Metrics**: **52 tests passed**, 1 harmless third-party deprecation warning, completed in **~2.7 seconds**.
