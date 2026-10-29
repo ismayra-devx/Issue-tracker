@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
+import IssueDetail from './pages/IssueDetail';
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
               <Route path="/" element={<Projects />} />
-              <Route path="/projects/:id" element={<ProjectDetail />} />
+              <Route path="/projects/:projectId" element={<ProjectDetail />} />
+              <Route path="/projects/:projectId/issues/:number" element={<IssueDetail />} />
             </Route>
           </Route>
 
