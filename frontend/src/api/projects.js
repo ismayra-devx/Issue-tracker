@@ -15,6 +15,15 @@ export const projectsApi = {
 
   getMembers: (id) =>
     client.get(`/projects/${id}/members`),
+
+  addMember: (id, email) =>
+    client.post(`/projects/${id}/members`, { email }),
+
+  getLabels: (id) =>
+    client.get(`/projects/${id}/labels`),
+
+  createLabel: (id, { name, color }) =>
+    client.post(`/projects/${id}/labels`, { name, color }),
 };
 
 export default projectsApi;
