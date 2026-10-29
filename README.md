@@ -185,16 +185,17 @@ The database uses SQLAlchemy 2.0 with referential integrity (`PRAGMA foreign_key
 * **Saved Filter Presets**: Custom user-defined filter queries saved to user profiles.
 
 ### What I'd Do With More Time
-1. **Interactive Kanban Board View**: Add a toggleable drag-and-drop Kanban view alongside the table view, mapping column drops to `issue_service.update_issue`.
-2. **Full-Text Search Engine**: Upgrade search from substring matching to PostgreSQL full-text search (`tsvector` / `tsquery`) or SQLite FTS5 for ranked relevance search.
-3. **OAuth2 / Social Authentication**: Support GitHub and Google single sign-on.
-4. **Markdown Mention Autocomplete**: Add `@username` and `#issue_number` typeahead autocomplete in comment and description textareas.
-5. **Dark Mode**: Add a system-aware light/dark mode theme switcher with Tailwind's `dark:` classes and `localStorage` persistence.
+1. **@mention notifications in comments**: In-app and email alerts when a user is mentioned in a comment or issue description.
+2. **Saved filters ("My open bugs")**: Quick-filter presets (such as "My open bugs" or "Assigned to me") persisted to user preferences.
+3. **Comment edit/delete with history**: Enable editing and soft-deleting comments while recording revision history in the audit log.
+4. **Postgres + deployment**: Production deployment target using managed PostgreSQL, automated containerized builds, and schema migration runners.
+5. **Pagination cursors for very large projects**: Keyset/cursor-based pagination for high-volume issue repositories instead of offset-based pagination.
 
 ---
 
 ## AI Tools Used
 
+* **Claude (Anthropic)**: Planned the build, wrote the step-by-step prompts given to the coding agent, and reviewed the output against the assignment requirements. I reviewed each change and can explain every part of the codebase.
 * **Google DeepMind Antigravity Coding Agent**:
   * **Code Scaffolding**: Generated initial boilerplate for SQLAlchemy models, Pydantic schemas, and Vite React components based on architectural requirements.
   * **Test Engineering**: Decomposed monolithic test cases into 52 isolated, deterministic pytest functions and configured test-only bcrypt round reduction.
